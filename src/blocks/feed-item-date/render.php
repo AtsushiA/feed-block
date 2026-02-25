@@ -36,7 +36,7 @@ $default_display_format = $attributes['dateType'] === 'time'
 
 $custom_input_format = $attributes['inputFormat'] ?: $default_input_format;
 // Note: when using default date_published/date_modified, input is ATOM format.
-$input_format = $is_custom_tag ? $custom_input_format : DateTIme::ATOM;
+$input_format = $is_custom_tag ? $custom_input_format : DateTime::ATOM;
 $display_format = $attributes['displayFormat'] ?: $default_display_format;
 
 $atts          = get_block_border_attributes( $attributes );

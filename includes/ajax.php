@@ -21,7 +21,7 @@ function get_feed_action() {
 
 	$url = filter_input( INPUT_POST, 'url', FILTER_SANITIZE_URL );
 
-	if ( ! $url ) {
+	if ( ! $url || ! wp_http_validate_url( $url ) ) {
 		wp_send_json_error( 'Invalid URL' );
 	}
 

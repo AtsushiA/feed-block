@@ -17,14 +17,12 @@ if ( empty( $text ) ) {
 
 $atts = get_block_border_attributes( $attributes );
 
-$rel = ! empty( $block->context['feed-block/itemLinkRel'] ) ? 'rel="' . esc_attr( $block->context['feed-block/itemLinkRel'] ) . '"' : '';
-if ( ! empty( $rel ) ) {
-	$atts['rel'] = $rel;
+if ( ! empty( $block->context['feed-block/itemLinkRel'] ) ) {
+	$atts['rel'] = esc_attr( $block->context['feed-block/itemLinkRel'] );
 }
 
-$target = ! empty( $block->context['feed-block/itemLinkTarget'] ) ? 'target="' . esc_attr( $block->context['feed-block/itemLinkTarget'] ) . '"' : '';
-if ( ! empty( $target ) ) {
-	$atts['target'] = $target;
+if ( ! empty( $block->context['feed-block/itemLinkTarget'] ) ) {
+	$atts['target'] = esc_attr( $block->context['feed-block/itemLinkTarget'] );
 }
 
 printf(

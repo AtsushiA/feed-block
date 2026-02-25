@@ -128,8 +128,8 @@ function get_block_border_attributes( $attributes ) {
  */
 function get_img_url( $html, $encoding = 'UTF-8' ) {
 	$dom   = new \DOMDocument();
-	// Must convert encoding, or otherwise will be interpreted as ISO-8859-1 https://stackoverflow.com/a/28502287/900971
-	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', $encoding ) );
+	// Use XML encoding declaration for UTF-8 support and LIBXML_NOERROR to suppress HTML5 tag warnings.
+	$dom->loadHTML( '<?xml encoding="UTF-8">' . $html, LIBXML_NOERROR );
 	$images = $dom->getElementsByTagName( 'img' );
 	if ( $images->length ) {
 		return $images->item( 0 )->getAttribute( 'src' );

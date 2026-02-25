@@ -42,11 +42,11 @@ $wrapper_attributes = get_block_wrapper_attributes( $atts );
 <div <?php echo $wrapper_attributes; ?>>
 <?php
 if ( ! $attributes['showMore'] ) :
-	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo esc_html( $content );
 else :
 	if ( $attributes['showMoreOnNewLine'] ) :
 		?>
-	<p><?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+	<p><?php echo esc_html( $content ); ?></p>
 	<p><?php echo $readMoreLink; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 		<?php
 	else :
