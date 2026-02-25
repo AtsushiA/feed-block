@@ -2,7 +2,7 @@
 Contributors:      cr0ybot
 Tags:              block, rss, atom, feed
 Tested up to:      6.2
-Stable tag:        0.5.0
+Stable tag:        0.6.0
 License:           GPL-3.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-3.0.html
 
