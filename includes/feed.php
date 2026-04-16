@@ -128,6 +128,19 @@ function get_feed( $url ) {
 				$image = $itunes_image[0]['attribs']['']['href'];
 			}
 
+			// Check for media:thumbnail (used by note.com and other media-namespace feeds).
+			// URL may be in attribs['']['url'] or in element data depending on the feed.
+			if ( ! $image ) {
+				$media_thumbnail = $feed_item->get_item_tags( 'http://search.yahoo.com/mrss/', 'thumbnail' );
+				if ( ! empty( $media_thumbnail ) ) {
+					if ( ! empty( $media_thumbnail[0]['attribs']['']['url'] ) ) {
+						$image = $media_thumbnail[0]['attribs']['']['url'];
+					} elseif ( ! empty( $media_thumbnail[0]['data'] ) ) {
+						$image = $media_thumbnail[0]['data'];
+					}
+				}
+			}
+
 			// Check for enclosure with image type.
 			if ( ! $image ) {
 				$enclosure = $feed_item->get_enclosure();

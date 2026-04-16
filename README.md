@@ -42,7 +42,7 @@ The summary can be limited to a certain number of words, and can optionally incl
 
 The Feed Item Image block is used to display the primary image of a feed item. It is similar to the Post Featured Image block.
 
-The image can come from either an `itunes:image` tag (in the case of a podcast feed) or the first HTML `img` tag in the primary content, in that order. You can also choose a different tag that includes an HTML `img` tag, though tags with `src` or `href` attributes are not yet supported.
+The image can come from an `itunes:image` tag (podcast feeds), a `media:thumbnail` tag (note.com and other Media RSS feeds), an enclosure with an image MIME type, or the first HTML `img` tag in the primary content, in that order. You can also choose a different tag that includes an HTML `img` tag, though tags with `src` or `href` attributes are not yet supported.
 
 The image can optionally link to the feed item's URL, and includes other settings such as an optional overlay, aspect ratio, and border options.
 
