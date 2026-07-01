@@ -12,7 +12,6 @@ namespace FeedBlock\Enqueue;
  */
 function localize_scripts() {
 	$localize = array(
-		// 'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'nonce' => wp_create_nonce( 'feed-block' ),
 	);
 

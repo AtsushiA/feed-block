@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<ruleset name="Feed Block">
+	<description>Coding standards for the Feed Loop Block plugin.</description>
+
+	<!-- Files to check. -->
+	<file>./feed-block.php</file>
+	<file>./includes/</file>
+	<file>./src/</file>
+
+	<!-- Exclude generated and third-party code. -->
+	<exclude-pattern>./vendor/*</exclude-pattern>
+	<exclude-pattern>./node_modules/*</exclude-pattern>
+	<exclude-pattern>./build/*</exclude-pattern>
+	<exclude-pattern>./tests/*</exclude-pattern>
+
+	<!-- Only sniff PHP files. -->
+	<arg name="extensions" value="php"/>
+	<!-- Show sniff codes and progress. -->
+	<arg value="sp"/>
+	<arg name="colors"/>
+	<arg name="parallel" value="8"/>
+
+	<!-- WordPress Coding Standards. -->
+	<rule ref="WordPress">
+		<!-- The plugin is namespaced (FeedBlock\...) and does not use class-per-file. -->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+	</rule>
+
+	<!-- Allow the plugin's namespace/hook prefixes. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="FeedBlock"/>
+				<element value="feed_block"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+	Block render.php templates are included inside WP_Block::render(), so their
+	top-level variables live in method scope, not the global scope. Do not treat
+	them as unprefixed globals.
+	-->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound">
+		<exclude-pattern>*/render.php</exclude-pattern>
+	</rule>
+
+	<!-- Text domain for translation functions. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="feed-block"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- PHP cross-version compatibility. -->
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="8.3-"/>
+
+	<!-- Minimum supported WordPress version. -->
+	<config name="minimum_wp_version" value="6.2"/>
+</ruleset>

@@ -99,7 +99,7 @@ function get_feed( $url, $cache_time = null ) {
 			$item = array(
 				'id'                 => $feed_item->get_id(),
 				'url'                => $feed_item->get_permalink(),
-				// 'external_url' => $item->get_permalink(), // Doesn't really have an RSS equivalent.
+				// Note: JSON Feed's external_url has no real RSS equivalent, so it is omitted.
 				'title'              => wp_strip_all_tags(
 					wp_specialchars_decode(
 						$feed_item->get_title()
@@ -143,7 +143,7 @@ function get_feed( $url, $cache_time = null ) {
 				$custom = array_slice( $feed_item->data['child'], 1 );
 				foreach ( $custom as $namespace => $namespace_items ) {
 					$item['custom'][ $namespace ] = array_map(
-						function( $namespace_item ) {
+						function ( $namespace_item ) {
 							if ( ! empty( $namespace_item[0] ) && isset( $namespace_item[0]['data'] ) ) {
 								return $namespace_item[0]['data'];
 							}
@@ -175,7 +175,7 @@ function get_feed( $url, $cache_time = null ) {
 			}
 
 			// Parse and strip images from content, grab first image if needed.
-			$dom = new \DOMDocument();
+			$dom     = new \DOMDocument();
 			$content = $feed_item->get_content();
 			// Use XML encoding declaration for UTF-8 support and LIBXML_NOERROR to suppress HTML5 tag warnings.
 			$dom->loadHTML( '<?xml encoding="UTF-8">' . $content, LIBXML_NOERROR );
@@ -188,7 +188,8 @@ function get_feed( $url, $cache_time = null ) {
 				// If an image is found, remove all img tags.
 				while ( $images->length > 0 ) {
 					$img = $images->item( 0 );
-					$img->parentNode->removeChild( $img );
+					// parentNode is a native DOMNode property and cannot be renamed.
+					$img->parentNode->removeChild( $img ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				}
 
 				// Add noimg value.

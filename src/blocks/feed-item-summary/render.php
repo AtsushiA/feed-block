@@ -16,10 +16,10 @@ if ( $attributes['constrainLength'] ) {
 	$content = wp_trim_words( $content, $attributes['summaryLength'] );
 }
 
-$readMoreLink = '';
+$read_more_link = '';
 if ( $attributes['showMore'] && ! empty( $attributes['moreText'] ) ) {
-	$rel          = ! empty( $block->context['feed-block/itemLinkRel'] ) ? 'rel="' . esc_attr( $block->context['feed-block/itemLinkRel'] ) . '"' : '';
-	$readMoreLink = sprintf(
+	$rel            = ! empty( $block->context['feed-block/itemLinkRel'] ) ? 'rel="' . esc_attr( $block->context['feed-block/itemLinkRel'] ) . '"' : '';
+	$read_more_link = sprintf(
 		'<a href="%1$s" class="wp-block-feed-block-feed-item-summary__more-link" target="%2$s" %3$s>%4$s</a>',
 		esc_url( $block->context['feed-block/item/url'] ),
 		esc_attr( $block->context['feed-block/itemLinkTarget'] ?? '_blank' ),
@@ -39,21 +39,20 @@ if ( $custom_tagname ) {
 $wrapper_attributes = get_block_wrapper_attributes( $atts );
 ?>
 
-<div <?php echo $wrapper_attributes; ?>>
+<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped attributes. ?>>
 <?php
 if ( ! $attributes['showMore'] ) :
 	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-else :
-	if ( $attributes['showMoreOnNewLine'] ) :
-		?>
+elseif ( $attributes['showMoreOnNewLine'] ) :
+	?>
 	<p><?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-	<p><?php echo $readMoreLink; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+	<p><?php echo $read_more_link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 		<?php
 	else :
 		?>
-	<p><?php echo esc_html( $content ); ?> <?php echo $readMoreLink; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+	<p><?php echo esc_html( $content ); ?> <?php echo $read_more_link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 		<?php
-	endif;
+
 endif;
-?>
+	?>
 </div>

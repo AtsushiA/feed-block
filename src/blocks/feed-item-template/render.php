@@ -40,7 +40,7 @@ if ( isset( $block->context['feed-block/displayLayout'] ) ) {
 $wrapper_attributes = \get_block_wrapper_attributes( array( 'class' => $classnames ) );
 ?>
 
-<ul <?php echo $wrapper_attributes; ?>>
+<ul <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped attributes. ?>>
 <?php
 // Get the number of items available.
 $item_count = count( $feed['items'] );
@@ -52,7 +52,7 @@ for ( $i = 0; $i < $block->context['feed-block/itemsToShow'] && $i < $item_count
 	// Namespace each property of the item with `feed-block/item/`.
 	$item = array_combine(
 		array_map(
-			function( $key ) {
+			function ( $key ) {
 				return 'feed-block/item/' . $key;
 			},
 			array_keys( $item )
@@ -64,8 +64,8 @@ for ( $i = 0; $i < $block->context['feed-block/itemsToShow'] && $i < $item_count
 	$item = array_merge(
 		$item,
 		array(
-			'feed-block/feedURL' => $block->context['feed-block/feedURL'],
-			'feed-block/itemLinkRel' => $block->context['feed-block/itemLinkRel'],
+			'feed-block/feedURL'        => $block->context['feed-block/feedURL'],
+			'feed-block/itemLinkRel'    => $block->context['feed-block/itemLinkRel'],
 			'feed-block/itemLinkTarget' => $block->context['feed-block/itemLinkTarget'],
 		)
 	);
@@ -87,7 +87,7 @@ for ( $i = 0; $i < $block->context['feed-block/itemsToShow'] && $i < $item_count
 	$item_classes = 'wp-block-feed-block-feed-item';
 	?>
 	<li class="<?php echo esc_attr( $item_classes ); ?>">
-		<?php echo $block_content; ?>
+		<?php echo $block_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Rendered inner block markup produced by WP_Block::render(). ?>
 	</li>
 	<?php
 endfor;

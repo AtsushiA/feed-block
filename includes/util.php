@@ -125,10 +125,14 @@ function get_block_border_attributes( $attributes ) {
 
 /**
  * Get a URL from an img tag in an HTML string.
+ *
+ * @param string $html     The HTML string to search.
+ * @param string $encoding The source encoding of the HTML string. Default 'UTF-8'.
+ * @return string The image URL, or an empty string if none is found.
  */
 function get_img_url( $html, $encoding = 'UTF-8' ) {
-	$dom   = new \DOMDocument();
-	// Must convert encoding, or otherwise will be interpreted as ISO-8859-1 https://stackoverflow.com/a/28502287/900971
+	$dom = new \DOMDocument();
+	// Convert the encoding, otherwise the markup is interpreted as ISO-8859-1.
 	$dom->loadHTML( mb_convert_encoding( $html, 'HTML-ENTITIES', $encoding ) );
 	$images = $dom->getElementsByTagName( 'img' );
 	if ( $images->length ) {

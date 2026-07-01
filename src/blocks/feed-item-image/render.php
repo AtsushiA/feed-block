@@ -31,13 +31,13 @@ if ( esc_url_raw( $img_url ) !== $img_url ) {
 }
 
 // If there is no image or placeholder, return early.
-if ( empty( $img_url) && empty( $attributes['placeholderURL'] ) ) {
+if ( empty( $img_url ) && empty( $attributes['placeholderURL'] ) ) {
 	return;
 }
 
 $atts = array();
 if ( empty( $img_url ) ) {
-	$img_url                = $attributes['placeholderURL'];
+	$img_url                  = $attributes['placeholderURL'];
 	$atts['data-placeholder'] = 'true';
 }
 
@@ -114,6 +114,6 @@ if ( ! $height && ! $width && ! $aspect_ratio ) {
 }
 ?>
 
-<figure <?php echo $wrapper_attributes; ?>>
-	<?php echo $item_image; ?>
+<figure <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped attributes. ?>>
+	<?php echo $item_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Image markup built from an esc_url_raw()-validated URL. ?>
 </figure>
