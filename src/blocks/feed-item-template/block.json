@@ -10,6 +10,7 @@
 	"usesContext": [
 		"feed-block/feedURL",
 		"feed-block/itemsToShow",
+		"feed-block/cacheTime",
 		"feed-block/displayLayout",
 		"feed-block/itemLinkRel",
 		"feed-block/itemLinkTarget"

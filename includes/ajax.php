@@ -25,7 +25,11 @@ function get_feed_action() {
 		wp_send_json_error( 'Invalid URL' );
 	}
 
-	$json = get_feed( $url );
+	// Cache time is provided in minutes; convert to seconds for get_feed().
+	$cache_time    = filter_input( INPUT_POST, 'cacheTime', FILTER_VALIDATE_INT );
+	$cache_seconds = ( is_int( $cache_time ) && $cache_time > 0 ) ? $cache_time * MINUTE_IN_SECONDS : null;
+
+	$json = get_feed( $url, $cache_seconds );
 
 	if ( is_wp_error( $json ) ) {
 		wp_send_json_error( $json->get_error_message() );

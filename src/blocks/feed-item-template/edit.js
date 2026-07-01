@@ -80,6 +80,7 @@ export default function Edit( {
 	context: {
 		'feed-block/feedURL': feedURL,
 		'feed-block/itemsToShow': itemsToShow,
+		'feed-block/cacheTime': cacheTime,
 		'feed-block/displayLayout': {
 			type: layoutType = 'flex',
 			columns = 1,
@@ -112,6 +113,7 @@ export default function Edit( {
 				body: new URLSearchParams( {
 					action: 'feed_block_get_feed',
 					url: feedURL,
+					cacheTime: cacheTime ?? '',
 					_ajax_nonce: feedBlock.nonce,
 				} ),
 			} );
@@ -122,7 +124,7 @@ export default function Edit( {
 		};
 
 		fetchFeed();
-	}, [ feedURL ] );
+	}, [ feedURL, cacheTime ] );
 
 	const itemContexts = useMemo( () => {
 		const items = feed?.items?.slice( 0, itemsToShow );

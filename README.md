@@ -8,6 +8,14 @@ Advanced RSS and Atom feed block with configurable child blocks for the WordPres
 
 The Feed Loop block is the main block that is used to display items from a feed. It is similar to the Query Loop block, but instead of querying posts from the WordPress database, it queries items from an RSS or Atom feed.
 
+In the block settings you can configure the number of items to show, the link `rel`/target applied to feed links, and the **Cache time**.
+
+#### Cache time
+
+The **Cache time** setting (in minutes) controls how long a fetched feed is cached before it is retrieved from the source again. The default is `720` minutes (12 hours), matching WordPress's default feed cache lifetime.
+
+The value is applied through WordPress's `wp_feed_cache_transient_lifetime` filter, so the feed transient stored by `fetch_feed()` respects the configured duration. Within a single request the feed is also memoized via a non-persistent object cache group (`feed-block`) to avoid rebuilding the feed multiple times.
+
 ### Feed Item Template
 
 The Feed Item Template block is used to display the layout of a single feed item. It is similar to the Post Template block, but instead of displaying a post, it displays a feed item.
