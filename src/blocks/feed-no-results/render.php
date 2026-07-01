@@ -11,8 +11,10 @@ namespace FeedBlock\Blocks\FeedNoResults;
 
 use function FeedBlock\Feed\get_feed;
 
+$cache_time    = isset( $block->context['feed-block/cacheTime'] ) ? (int) $block->context['feed-block/cacheTime'] : 0;
+$cache_seconds = ( $cache_time > 0 ) ? $cache_time * MINUTE_IN_SECONDS : null;
 
-$feed = get_feed( $block->context['feed-block/feedURL'] );
+$feed = get_feed( $block->context['feed-block/feedURL'], $cache_seconds );
 
 // If there are feed items, do not render this block.
 if ( ( ! is_wp_error( $feed ) && ! empty( $feed['items'] ) ) ) {

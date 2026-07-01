@@ -8,20 +8,55 @@
 namespace FeedBlock\Feed;
 
 /**
+ * Registers the feed object cache group as non-persistent.
+ *
+ * The object cache is only used as a per-request memoization layer so that
+ * repeated get_feed() calls for the same URL within a single request (e.g. the
+ * Feed Item Template and Feed Loop - No Results blocks) do not rebuild the feed
+ * array multiple times. Cross-request caching is handled by the feed transient
+ * inside fetch_feed(), whose lifetime is controlled by the block's cache time
+ * setting. Marking the group non-persistent prevents a persistent object cache
+ * (e.g. Redis) from storing the feed indefinitely and overriding that setting.
+ */
+function register_cache_group() {
+	wp_cache_add_non_persistent_groups( 'feed-block' );
+}
+add_action( 'init', __NAMESPACE__ . '\\register_cache_group' );
+
+/**
  * Fetches an Feed Loop contents and returns a JSONFeed-compatible array.
  *
- * @param string $url The feed URL.
+ * @param string   $url        The feed URL.
+ * @param int|null $cache_time Optional. How long, in seconds, the fetched feed
+ *                             should be cached before it is retrieved again.
+ *                             When null or not a positive integer, WordPress's
+ *                             default feed cache lifetime (12 hours) is used.
  * @return array
  */
-function get_feed( $url ) {
+function get_feed( $url, $cache_time = null ) {
 
-	// Use object cache if available.
+	// Per-request memoization via the (non-persistent) object cache.
 	$cached_json = wp_cache_get( $url, 'feed-block' );
 	if ( false !== $cached_json ) {
 		return $cached_json;
 	}
 
+	// Optionally override the feed cache lifetime for this fetch. The filter is
+	// scoped to this specific URL and removed immediately after fetching so it
+	// does not affect other feeds.
+	$cache_filter = null;
+	if ( is_int( $cache_time ) && $cache_time > 0 ) {
+		$cache_filter = function ( $lifetime, $filter_url ) use ( $url, $cache_time ) {
+			return ( $filter_url === $url ) ? $cache_time : $lifetime;
+		};
+		add_filter( 'wp_feed_cache_transient_lifetime', $cache_filter, 10, 2 );
+	}
+
 	$feed = fetch_feed( $url );
+
+	if ( null !== $cache_filter ) {
+		remove_filter( 'wp_feed_cache_transient_lifetime', $cache_filter, 10 );
+	}
 
 	if ( is_wp_error( $feed ) ) {
 		// Return the error object.
@@ -189,8 +224,9 @@ function get_feed( $url ) {
 	 */
 	$json = apply_filters( 'feed_block_feed', $json, $feed );
 
-	// Cache the feed.
-	wp_cache_set( $url, $json, 'feed_block' );
+	// Memoize the feed for the remainder of the request. The group name must
+	// match the one used by wp_cache_get() above.
+	wp_cache_set( $url, $json, 'feed-block' );
 
 	return $json;
 }

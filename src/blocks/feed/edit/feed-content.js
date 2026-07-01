@@ -28,6 +28,9 @@ const TEMPLATE = [
 ];
 const DEFAULT_MIN_ITEMS = 1;
 const DEFAULT_MAX_ITEMS = 20;
+// Minimum cache time in minutes. A value of 0 would make the feed cache never
+// expire, so we keep the lower bound at 1 minute.
+const DEFAULT_MIN_CACHE_TIME = 1;
 
 export default function FeedContent( {
 	attributes,
@@ -36,6 +39,7 @@ export default function FeedContent( {
 } ) {
 	const {
 		itemsToShow,
+		cacheTime,
 		displayLayout,
 		tagName: Tag = 'div',
 		layout = {},
@@ -103,6 +107,28 @@ export default function FeedContent( {
 						min={ DEFAULT_MIN_ITEMS }
 						max={ DEFAULT_MAX_ITEMS }
 						required
+					/>
+					<TextControl
+						__nextHasNoMarginBottom
+						type="number"
+						label={ __( 'Cache time (minutes)', 'feed-block' ) }
+						help={ __(
+							'How long the fetched feed is cached before it is retrieved again. Default is 720 minutes (12 hours).',
+							'feed-block'
+						) }
+						value={ cacheTime }
+						min={ DEFAULT_MIN_CACHE_TIME }
+						onChange={ ( value ) => {
+							const parsed = parseInt( value, 10 );
+							setAttributes( {
+								cacheTime: Number.isNaN( parsed )
+									? undefined
+									: Math.max(
+											DEFAULT_MIN_CACHE_TIME,
+											parsed
+									  ),
+							} );
+						} }
 					/>
 					{ showColumnsControl && (
 						<>

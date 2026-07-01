@@ -11,7 +11,10 @@ namespace FeedBlock\Blocks\FeedItemTemplate;
 
 use function FeedBlock\Feed\get_feed;
 
-$feed = get_feed( $block->context['feed-block/feedURL'] );
+$cache_time    = isset( $block->context['feed-block/cacheTime'] ) ? (int) $block->context['feed-block/cacheTime'] : 0;
+$cache_seconds = ( $cache_time > 0 ) ? $cache_time * MINUTE_IN_SECONDS : null;
+
+$feed = get_feed( $block->context['feed-block/feedURL'], $cache_seconds );
 
 if ( is_wp_error( $feed ) ) {
 	if ( WP_DEBUG ) {
