@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    env:
+      SLUG: feed-block
+      VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify version matches plugin header
+        run: |
+          HEADER_VERSION=$(grep -oP 'Version:\s*\K[0-9]+\.[0-9]+\.[0-9]+' "${SLUG}.php")
+          if [ "$HEADER_VERSION" != "$VERSION" ]; then
+            echo "::error::Tag version ($VERSION) does not match plugin header version ($HEADER_VERSION)"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Build blocks
+        run: |
+          npm ci
+          npm run build
+
+      - name: Create plugin zip
+        run: |
+          STAGING="${RUNNER_TEMP}/${SLUG}"
+          mkdir -p "$STAGING"
+          rsync -a \
+            --exclude='.git' \
+            --exclude-from=<(grep -vE '^\s*#|^\s*$' .distignore) \
+            ./ "$STAGING/"
+          ( cd "$RUNNER_TEMP" && zip -r "${GITHUB_WORKSPACE}/${SLUG}-${VERSION}.zip" "$SLUG" )
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.SLUG }}-${{ env.VERSION }}.zip
+          generate_release_notes: true

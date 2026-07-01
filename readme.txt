@@ -1,8 +1,8 @@
 === Feed Loop Block ===
 Contributors:      cr0ybot
 Tags:              block, rss, atom, feed
-Tested up to:      6.2
-Stable tag:        0.5.0
+Tested up to:      6.8
+Stable tag:        0.6.0
 License:           GPL-3.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -43,6 +43,14 @@ Make sure your user account has the `unfiltered_html` capability, often reserved
 
 
 == Changelog ==
+
+= 2026-07-01 0.6.0 =
+* Feature: Configurable feed cache time on the Feed Loop block (defaults to 720 minutes / 12 hours)
+* Feature: Enclosure image support
+* Fix: Object cache group name mismatch; the feed object cache now works as a per-request memoization layer
+* Fix: Security issues identified in a security audit
+* Fix: PHP 8.2+ deprecations and HTML5 tag warnings
+* Dev: Added phpcs, PHPUnit, wp-env, and GitHub Actions CI/release tooling
 
 = 2023-05-03 0.5.0 =
 * Feature: Custom block icon

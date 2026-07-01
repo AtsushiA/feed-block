@@ -7,7 +7,9 @@
  * @package feed-block
  */
 
-$contentTypeMap = array(
+defined( 'ABSPATH' ) || exit;
+
+$content_type_map = array(
 	'text'      => 'content_text',
 	'html'      => 'content_html',
 	'htmlNoImg' => 'content_html_noimg',
@@ -17,12 +19,12 @@ $custom_tag     = is_array( $attributes['customTag'] ) && count( $attributes['cu
 $custom_tagname = $custom_tag ? $custom_tag[1] : false;
 $custom_content = $custom_tag ? $block->context['feed-block/item/custom'][ $custom_tag[0] ][ $custom_tag[1] ] : false;
 
-$content = $custom_content !== false // Empty string is valid content.
+$content = false !== $custom_content // Empty string is valid content.
 	? (
 		'htmlNoImg' === $attributes['contentType']
 			? preg_replace( '/<img[^>]*>/g', '', $custom_content )
 			: $custom_content
-	) : $block->context[ 'feed-block/item/' . $contentTypeMap[ $attributes['contentType'] ] ];
+	) : $block->context[ 'feed-block/item/' . $content_type_map[ $attributes['contentType'] ] ];
 if ( 'text' === $attributes['contentType'] ) {
 	$content = wp_strip_all_tags( $content );
 }
@@ -38,6 +40,6 @@ if ( $custom_tagname ) {
 $wrapper_attributes = get_block_wrapper_attributes( $atts );
 ?>
 
-<div <?php echo $wrapper_attributes; ?>>
+<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped attributes. ?>>
 	<?php echo wp_kses_post( $content ); ?>
 </div>

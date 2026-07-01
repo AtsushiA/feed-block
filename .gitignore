@@ -32,5 +32,22 @@ node_modules/
 # Build files
 build/
 
+# Composer dependencies
+/vendor/
+
+# wp-env
+.wp-env.override.json
+debug.log
+db.sql
+
+# PHPUnit
+.phpunit.result.cache
+
+# macOS
+.DS_Store
+
+# Claude Code
+/.claude/
+
 # Example files
 /examples/

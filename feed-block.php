@@ -17,6 +17,8 @@
 
 namespace FeedBlock;
 
+defined( 'ABSPATH' ) || exit;
+
 // Import includes.
 require_once __DIR__ . '/includes/util.php';
 require_once __DIR__ . '/includes/feed.php';

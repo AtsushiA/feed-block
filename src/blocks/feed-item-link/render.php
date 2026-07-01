@@ -9,6 +9,8 @@
 
 use function FeedBlock\Util\get_block_border_attributes;
 
+defined( 'ABSPATH' ) || exit;
+
 $text = $attributes['text'] ?? '';
 
 if ( empty( $text ) ) {
@@ -30,6 +32,6 @@ if ( ! empty( $target ) ) {
 printf(
 	'<a href="%1$s" %2$s>%3$s</a>',
 	esc_url( $block->context['feed-block/item/url'] ),
-	get_block_wrapper_attributes( $atts ),
+	get_block_wrapper_attributes( $atts ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped attributes.
 	esc_html( $text )
 );

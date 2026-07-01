@@ -7,12 +7,13 @@
 
 namespace FeedBlock\Enqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Block script localizations.
  */
 function localize_scripts() {
 	$localize = array(
-		// 'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'nonce' => wp_create_nonce( 'feed-block' ),
 	);
 

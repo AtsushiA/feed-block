@@ -11,6 +11,8 @@ use function FeedBlock\Util\get_block_feed_item_image_overlay_element_markup;
 use function FeedBlock\Util\get_block_border_attributes;
 use function FeedBlock\Util\get_img_url;
 
+defined( 'ABSPATH' ) || exit;
+
 $custom_tag     = is_array( $attributes['customTag'] ) && count( $attributes['customTag'] ) === 2 ? $attributes['customTag'] : false;
 $custom_tagname = $custom_tag ? $custom_tag[1] : false;
 $custom_content = $custom_tag ? $block->context['feed-block/item/custom'][ $custom_tag[0] ][ $custom_tag[1] ] : false;
@@ -31,13 +33,13 @@ if ( esc_url_raw( $img_url ) !== $img_url ) {
 }
 
 // If there is no image or placeholder, return early.
-if ( empty( $img_url) && empty( $attributes['placeholderURL'] ) ) {
+if ( empty( $img_url ) && empty( $attributes['placeholderURL'] ) ) {
 	return;
 }
 
 $atts = array();
 if ( empty( $img_url ) ) {
-	$img_url                = $attributes['placeholderURL'];
+	$img_url                  = $attributes['placeholderURL'];
 	$atts['data-placeholder'] = 'true';
 }
 
@@ -114,6 +116,6 @@ if ( ! $height && ! $width && ! $aspect_ratio ) {
 }
 ?>
 
-<figure <?php echo $wrapper_attributes; ?>>
-	<?php echo $item_image; ?>
+<figure <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped attributes. ?>>
+	<?php echo $item_image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Image markup built from an esc_url_raw()-validated URL. ?>
 </figure>
