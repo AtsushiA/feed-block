@@ -7,6 +7,8 @@
  * @package feed-block
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $content_type_map = array(
 	'text'      => 'content_text',
 	'html'      => 'content_html',

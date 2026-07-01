@@ -7,6 +7,8 @@
 
 namespace FeedBlock\Feed;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Registers the feed object cache group as non-persistent.
  *

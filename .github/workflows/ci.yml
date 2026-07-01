@@ -28,6 +28,9 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
+          # Pre-create the test database so install-wp-tests.sh can skip DB
+          # creation (6th arg `true`) and avoid its interactive recreate prompt.
+          MYSQL_DATABASE: wordpress_test
         ports:
           - 3306:3306
         options: >-

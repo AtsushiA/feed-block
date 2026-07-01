@@ -7,6 +7,8 @@
 
 namespace FeedBlock\Util;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Generate markup for the HTML element that will be used for the overlay.
  *

@@ -7,6 +7,8 @@
  * @package feed-block
  */
 
+defined( 'ABSPATH' ) || exit;
+
 $custom_tag     = is_array( $attributes['customTag'] ) && count( $attributes['customTag'] ) === 2 ? $attributes['customTag'] : false;
 $custom_tagname = $custom_tag ? $custom_tag[1] : false;
 $custom_content = $custom_tag ? $block->context['feed-block/item/custom'][ $custom_tag[0] ][ $custom_tag[1] ] : false;

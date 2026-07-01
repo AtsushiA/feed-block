@@ -9,6 +9,8 @@
 
 use function FeedBlock\Util\get_block_border_attributes;
 
+defined( 'ABSPATH' ) || exit;
+
 $text = $attributes['text'] ?? '';
 
 if ( empty( $text ) ) {

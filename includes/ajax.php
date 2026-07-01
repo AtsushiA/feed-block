@@ -9,6 +9,8 @@ namespace FeedBlock\AJAX;
 
 use function FeedBlock\Feed\get_feed;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Fetches a feed's contents. Admin only.
  */

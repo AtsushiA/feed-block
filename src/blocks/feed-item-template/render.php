@@ -11,6 +11,8 @@ namespace FeedBlock\Blocks\FeedItemTemplate;
 
 use function FeedBlock\Feed\get_feed;
 
+defined( 'ABSPATH' ) || exit;
+
 $cache_time    = isset( $block->context['feed-block/cacheTime'] ) ? (int) $block->context['feed-block/cacheTime'] : 0;
 $cache_seconds = ( $cache_time > 0 ) ? $cache_time * MINUTE_IN_SECONDS : null;
 

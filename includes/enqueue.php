@@ -7,6 +7,8 @@
 
 namespace FeedBlock\Enqueue;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Block script localizations.
  */
